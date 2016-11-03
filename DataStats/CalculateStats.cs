@@ -1,50 +1,95 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/* Copyright 2016 J.D. Sandifer - MIT License
+ * 
+ * Solution to the interview code problem
+ * 
+ * Because of the relatively small size of the task and its disconnected nature,
+ * I chose not to use a bunch of objects, structs, helper classes, etc. so I
+ * could reduce overhead as I would when on the job. Had this been a
+ * component in a larger code base that might have benefited from more 
+ * code reuse or separation of concerns, then I would have chosen a more
+ * segmented and object oriented approach to help with that.
+ * 
+ * However, the stats calculations were getting nested pretty deeply so
+ * I separated them into a different function. To me, fewer indents
+ * means more readable code so I avoided several indents on some of the more
+ * "meaty" code that way. */
+
+using System;
 using System.Globalization;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace JDSandifer.DataStats
 {
     class CalculateStats
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            /* Find all .data files in the this folder */
-            string[] fileNames = Directory.GetFiles(".", "*.data");
+            // Define return values
+            const int Success = 0;
+            const int ErrorNoDataFiles = 1;
+            
 
-            /* TODO: Check for bad files: 
-                *         illegal characters, no data, bad formats 
+            /* Create an array of all .data files in the this folder */
+            string[] fileNames = null;
+
+            try
+            {
+                fileNames = Directory.GetFiles(".", "*.data");
+            }
+            catch (Exception e)
+            {
+            }
+
+            if (fileNames == null || fileNames.Length == 0)
+            {
+                Console.WriteLine("No .data files were found in this folder.");
+                // Keep command line window open til user is done
+                Console.ReadKey();
+                return ErrorNoDataFiles;
+            }
+
+
+            /* Check for illegal characters, bad formatting, and then
+             * print the stats if everything's ok */
             foreach (string fileName in fileNames)
             {
+                // Print filename we're processing, but trim off the ".\" prefix
+                Console.WriteLine(fileName.Substring(2));
 
-            } */
+                // Read in the file and check for errors
+                string[] linesFromFile = File.ReadAllLines(fileName);
+                const string illegalCharacters = "[^0-9. ]";
+                const string correctNumberList =
+                    "^[ ]?([0-9]+([.][0-9]+)?)+([ ][0-9]+([.][0-9]+)?)*[ ]?";
 
-            /* Extract all numbers from the file as an array */
-            foreach (string fileName in fileNames)
-            {
-
-                // Read in the file and get the numbers as an array
-                string numbersString = "";
-                string[] numberStrings = null;
-                double[] numbers = new double[0];
-
-                if (File.Exists(fileName))
+                if (linesFromFile == null 
+                    || linesFromFile.Length == 0
+                    || linesFromFile[0] == "")
                 {
-                    // Read all lines but only take the first one - line 0
-                    // (.data files should only contain one line) - and
-                    // split it into an array of doubles
-                    numbersString = File.ReadAllLines(fileName)[0].Trim(' ');
-                    numberStrings = numbersString.Split(null as char[]);
-                    numbers = new double[numberStrings.Length];
+                    Console.WriteLine("   Error reading file: no data");
+                }
+                else if (linesFromFile.Length != 1
+                    || Regex.IsMatch(linesFromFile[0], illegalCharacters))
+                {
+                    Console.WriteLine("   Error reading file: unexpected character");
+                }
+                else if (!Regex.IsMatch(linesFromFile[0], correctNumberList))
+                {
+                    Console.WriteLine("   Error reading file: incorrect format");
+                }
+                else
+                {
+                    // Convert line of numbers into an array
+                    string firstLine = linesFromFile[0].Trim(' ');
+                    string[] numberStrings = firstLine.Split(null as char[]);
+                    double[] numbers = new double[numberStrings.Length];
 
                     for (int i = 0; i < numberStrings.Length; i++)
                     {
                         numbers[i] = double.Parse(numberStrings[i],
                             CultureInfo.InvariantCulture.NumberFormat);
                     }
-
-                    // Print filename, but trim off ".\" at start
-                    Console.WriteLine(fileName.Substring(2));
 
                     if (numbers.Length > 0)
                     {
@@ -60,6 +105,7 @@ namespace JDSandifer.DataStats
             // Keep command line window open til user is done 
             // in case this isn't run from the command line
             Console.ReadKey();
+            return Success;
         }
 
         /* Prints out stats based on a given array of numbers.

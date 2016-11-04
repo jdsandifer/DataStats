@@ -59,9 +59,9 @@ namespace JDSandifer.DataStats
 
                 // Read in the file and check for errors
                 string[] linesFromFile = File.ReadAllLines(fileName);
-                const string illegalCharacters = "[^0-9. ]";
+                const string illegalCharacters = "[^0-9. -]";
                 const string correctNumberList =
-                    "^[ ]?([0-9]+([.][0-9]+)?)+([ ][0-9]+([.][0-9]+)?)*[ ]?";
+                    "^[ ]?(-?[0-9]*[.]?[0-9]+)([ ]-?[0-9]*[.]?[0-9]+)*[ ]?";
 
                 if (linesFromFile == null 
                     || linesFromFile.Length == 0
@@ -108,6 +108,7 @@ namespace JDSandifer.DataStats
             return Success;
         }
 
+
         /* Prints out stats based on a given array of numbers.
          * Expects at least one number in the array. */
         private static void CalculateAndPrintFileStats(double[] numbers)
@@ -147,7 +148,7 @@ namespace JDSandifer.DataStats
                 0.5);
             
             /* Print out the stats */
-            const string numberFormat = "0.####";
+            const string numberFormat = "0.##";
             
             Console.WriteLine("   Sum: " + sum.ToString(numberFormat));
             Console.WriteLine("   Min: " + min.ToString(numberFormat));

@@ -59,8 +59,8 @@ namespace JDSandifer.DataStats
 
                 // Read in the file and check for errors
                 string[] linesFromFile = File.ReadAllLines(fileName);
-                const string illegalCharacters = "[^0-9. -]";
-                const string correctNumberList =
+                const string IllegalCharacters = "[^0-9. -]";
+                const string CorrectNumberList =
                     "^[ ]?(-?[0-9]*[.]?[0-9]+)([ ]-?[0-9]*[.]?[0-9]+)*[ ]?";
 
                 if (linesFromFile == null 
@@ -70,11 +70,11 @@ namespace JDSandifer.DataStats
                     Console.WriteLine("   Error reading file: no data");
                 }
                 else if (linesFromFile.Length != 1
-                    || Regex.IsMatch(linesFromFile[0], illegalCharacters))
+                    || Regex.IsMatch(linesFromFile[0], IllegalCharacters))
                 {
                     Console.WriteLine("   Error reading file: unexpected character");
                 }
-                else if (!Regex.IsMatch(linesFromFile[0], correctNumberList))
+                else if (!Regex.IsMatch(linesFromFile[0], CorrectNumberList))
                 {
                     Console.WriteLine("   Error reading file: incorrect format");
                 }
@@ -148,14 +148,14 @@ namespace JDSandifer.DataStats
                 0.5);
             
             /* Print out the stats */
-            const string numberFormat = "0.##";
+            const string NumberFormat = "0.##";
             
-            Console.WriteLine("   Sum: " + sum.ToString(numberFormat));
-            Console.WriteLine("   Min: " + min.ToString(numberFormat));
-            Console.WriteLine("   Max: " + max.ToString(numberFormat));
-            Console.WriteLine("   Average: " + average.ToString(numberFormat));
+            Console.WriteLine("   Sum: " + sum.ToString(NumberFormat));
+            Console.WriteLine("   Min: " + min.ToString(NumberFormat));
+            Console.WriteLine("   Max: " + max.ToString(NumberFormat));
+            Console.WriteLine("   Average: " + average.ToString(NumberFormat));
             Console.WriteLine("   Standard Deviation: "
-                + standardDeviation.ToString(numberFormat));
+                + standardDeviation.ToString(NumberFormat));
             
         }
     }

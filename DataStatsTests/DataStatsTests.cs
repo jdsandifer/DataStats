@@ -1,4 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright 2016 J.D. Sandifer - MIT License
+
+// Unit tests for interview problem solution
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using JDSandifer.Interview;
 
 namespace DataStatsTests

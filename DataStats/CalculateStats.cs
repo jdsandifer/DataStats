@@ -5,10 +5,12 @@
 // Because of the relatively small size of the task and its disconnected nature, I chose not 
 // to segment the code into objects, structs, single-purpose functions, etc. to keep the code 
 // easy to read without jumping around. Had this been a component in a larger code base that 
-// might have benefited from more code reuse or been difficult to test without OOP, then I would 
-// have chosen a more segmented and object oriented approach. I also "unit" tested this project
-// using .data files with descriptive names that held edge cases, error values, bad data, and 
-// large data sets. That way the tests just show up in the program output with the other data.
+// might have benefited from more code reuse or been difficult to test without more segmentation,
+// I would have chosen to do more to separate concerns and use OOP.
+
+// I tested this project using .data files with descriptive names that held edge cases, error values,
+// bad data, and large data sets to verify the file reading portion. I also used standard VS unit 
+// tests to to verify the functionality of the calculation function. 
 
 using System;
 using System.Globalization;
@@ -34,7 +36,7 @@ namespace JDSandifer.Interview
             }
             catch
             {
-                // We could potentially log errors here.
+                // We could potentially log specific exceptions here.
             }
 
             if (fileNames == null || fileNames.Length == 0)
@@ -53,17 +55,25 @@ namespace JDSandifer.Interview
                 Console.WriteLine(fileName.Substring(2));
 
                 // Read in the file and check for errors
-                string[] linesFromFile = File.ReadAllLines(fileName);
+                string[] linesFromFile = null;
+
+                try
+                {
+                    linesFromFile = File.ReadAllLines(fileName);
+                }
+                catch
+                {
+                    // Another spot to potentially log specific errors.
+                }
+
                 const string IllegalCharacters = "[^0-9. -]";
-                const string CorrectNumberList = 
-                                "^[ ]?(-?[0-9]*[.]?[0-9]+)([ ]-?[0-9]*[.]?[0-9]+)*[ ]?";
+                const string CorrectNumberList = "^[ ]?(-?[0-9]*[.]?[0-9]+)([ ]-?[0-9]*[.]?[0-9]+)*[ ]?";
 
                 if (linesFromFile == null || linesFromFile.Length == 0 || linesFromFile[0] == "")
                 {
                     Console.WriteLine("   Error reading file: no data");
                 }
-                else if (linesFromFile.Length != 1 
-                            || Regex.IsMatch(linesFromFile[0], IllegalCharacters))
+                else if (linesFromFile.Length != 1 || Regex.IsMatch(linesFromFile[0], IllegalCharacters))
                 {
                     Console.WriteLine("   Error reading file: unexpected character");
                 }
@@ -104,6 +114,7 @@ namespace JDSandifer.Interview
                 Console.WriteLine();
                 return "   Error reading file: no data";
             }
+
             // At least one number is expected so initialize sum, min, and max with it
             decimal sum = (decimal) numbers[0];
             double min = numbers[0];

@@ -15,9 +15,9 @@ using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace JDSandifer.DataStats
+namespace JDSandifer.Interview
 {
-    class CalculateStats
+    public class DataStats
     {
         static int Main(string[] args)
         {
@@ -84,17 +84,10 @@ namespace JDSandifer.DataStats
                             CultureInfo.InvariantCulture.NumberFormat);
                     }
 
-                    if (numbers.Length > 0)
-                    {
-                        CalculateAndPrintFileStats(numbers);
-                    }
-                    else
-                    {
-                        Console.WriteLine("   Error reading file: no data");
-                    }
+                    Console.WriteLine(CalculateAndFormatFileStats(numbers));
                 }
             }
-
+            
             // Keep command line window open til user is done 
             // in case this isn't run from the command line
             Console.ReadKey();
@@ -103,8 +96,14 @@ namespace JDSandifer.DataStats
         
         // Prints out stats based on a given array of numbers.
         // Expects at least one number in the array.
-        private static void CalculateAndPrintFileStats(double[] numbers)
+        public static string CalculateAndFormatFileStats(double[] numbers)
         {
+            // Ensure we have at least one number
+            if (numbers.Length == 0)
+            {
+                Console.WriteLine();
+                return "   Error reading file: no data";
+            }
             // At least one number is expected so initialize sum, min, and max with it
             decimal sum = (decimal) numbers[0];
             double min = numbers[0];
@@ -139,11 +138,11 @@ namespace JDSandifer.DataStats
             
             // Print out the stats
             const string NumberFormat = "0.##";
-            Console.WriteLine("   Sum: " + sum.ToString(NumberFormat));
-            Console.WriteLine("   Min: " + min.ToString(NumberFormat));
-            Console.WriteLine("   Max: " + max.ToString(NumberFormat));
-            Console.WriteLine("   Average: " + average.ToString(NumberFormat));
-            Console.WriteLine("   Standard Deviation: " + standardDeviation.ToString(NumberFormat));
+            return  "   Sum: " + sum.ToString(NumberFormat)
+                + "\n   Min: " + min.ToString(NumberFormat)
+                + "\n   Max: " + max.ToString(NumberFormat)
+                + "\n   Average: " + average.ToString(NumberFormat)
+                + "\n   Standard Deviation: " + standardDeviation.ToString(NumberFormat);
         }
     }
 }

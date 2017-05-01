@@ -1,6 +1,6 @@
 ﻿// Copyright 2016 J.D. Sandifer - MIT License
  
-// Solution to the interview code problem
+// Solution to the code problem
 
 // Because of the relatively small size of the task and its disconnected nature, I chose not 
 // to segment the code into objects, structs, single-purpose functions, etc. to keep the code 

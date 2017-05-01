@@ -1,11 +1,11 @@
 # DataStats
-A solution to a great interview problem
+A solution to a great coding problem
 
-This was a problem given to me as part of an interview process. I was also given 
+This was a problem given to me as part of a coding challenge. I was also given 
 the challenge to complete it using a programming language I had not previously used. 
-I imagine it will work great to help the hiring manager and the team see if I will 
-be a good fit, but it was also a great way for me to quickly learn the basics of C# 
-and Visual Studio. I plan to use it again the next time I go to learn a new language.
+It was a great way for me to quickly learn the basics of C# and Visual Studio and 
+test my general skills as a software developer. I plan to use it or something like it 
+again the next time I go to learn a new language.
 
 ---
 
